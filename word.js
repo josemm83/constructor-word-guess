@@ -1,20 +1,20 @@
 var Letter = require("./letter");
 
 function Word (input){
-    var letterArray = [];
+    this.letterArray = [];
     for (var i = 0; i < input.length; i++){
         var output = new Letter(input[i]);
-        letterArray.push(output);
+        this.letterArray.push(output);
     }
-    var value = function (){
+    this.value = function (){
         var letterString = "";
-        for(var x = 0; x < letterArray.length; x++){
-            letterString += letterArray[i] + " ";
+        for(var x = 0; x < this.letterArray.length; x++){
+            letterString += this.letterArray[i] + " ";
         }
-        console.log(letterString + "\n");
+        console.log(letterString + "\n------------------------------------\n");
     }
-    var guess = function(char){
-        for(var j = 0; j < letterArray.length; j++){
+    this.guess = function(char){
+        for(var j = 0; j < this.letterArray.length; j++){
             this.letterArray[i].character(char);
         }
     }

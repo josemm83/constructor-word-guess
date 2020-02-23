@@ -25,15 +25,3 @@ function Letter (input){
     }
 }
 module.exports = Letter;
-// var askQuestion = function (){
-//     inquirer.prompt([
-//         {
-//             name: "letter",
-//             message: "Guess the letter: "
-//         }
-//     ]).then(function(response){
-//         Letter(response.letter);
-//     });
-// }
-
-// askQuestion();
