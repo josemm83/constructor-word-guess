@@ -1,28 +1,32 @@
-var Word = require("./word");
+var Word = require("./word.js");
 var inquirer = require("inquirer");
 
 var choices = "abcdefghijklmnopqrstuvwxyz";
-var randomSelect = ["shrimp", "octopus", "shark", "oyster", "squid", "flounder", "coral reef", 
+var aquarium = ["shrimp", "octopus", "shark", "oyster", "squid", "flounder", "coral reef", 
     "lobster", "crayfish", "salmon", "catfish", "yellowtail", "crab"];
 
 var counter = 10;
 var correct = [];
 var incorrect = [];
 var wordChoosen = false;
-var randomNum = 0;
-var randomWord = "";
+var randomNum = Math.floor(Math.random() * aquarium.length);
+var randomWord = new Word(aquarium[randomNum]);
 
 function guessGame(){
-    if(!wordChoosen){
-        generateWord();
+    if(wordChoosen){
+        randomNum = Math.floor(Math.random() * aquarium.length);
+        randomWord = new Word(aquarium[randomNum]);
+        wordChoosen = false
     }
     var wordComplete = [];
+    randomWord.letterArray.forEach(completeCheck);
+
     if(wordComplete.includes(false)){
         inquirer.prompt([
         {
             type: "input",
-            name: "letter",
-            message: "Guess a letter!"
+            message: "Guess a letter!",
+            name: "letter"
         }
         ]).then(function(response){
             if(!choices.includes(response.letter) || response.letter.length > 1){
@@ -37,7 +41,7 @@ function guessGame(){
                 else{
                     var guessedWord = [];
                     randomWord.guess(response.letter);
-                    randomWord.letterArray.foreach(wordCheck);
+                    randomWord.letterArray.forEach(wordCheck);
                     if(guessedWord.join("") === wordComplete.join("")){
                         console.log("Incorrect!");
                         incorrect.push(response.letter);
@@ -47,14 +51,18 @@ function guessGame(){
                         console.log("\nCorrect!\n");
                         correct.push(response.letter);
                     }
-                    randomWord();
+                    randomWord.value();
                     console.log("Guesses left: " + counter + "\n");
                     console.log("Letters guessed: " + incorrect.join(" ") + "\n");
                     if(counter > 0){
                         guessGame();
                     }
                     else{
-                        console.log("YOU LOSE!\n")
+                        console.log("YOU LOSE!\n");
+                        reset();
+                    }
+                    function wordCheck(key){
+                        guessedWord.push(key.guess);
                     }
                 }
             }
@@ -64,7 +72,7 @@ function guessGame(){
         console.log("YOU WIN!\n");
         reset();
     }
-    function wordCheck(key){
+    function completeCheck(key){
         wordComplete.push(key.guess);
     }
 }
@@ -74,15 +82,15 @@ function reset(){
         {
             type: "list",
             message: "Would you like to play again?",
-            choice: ["Yes", "No"],
-            name: "reset"
+            choices: ["Yes", "No"],
+            name: "answer"
         }
-    ]).then(function(respone){
-        if (response.reset === "Yes"){
+    ]).then(function(response){
+        if (response.answer === "Yes"){
             counter = 10;
             correct = [];
             incorrect = [];
-            wordChoosen = false;
+            wordChoosen = true;
             guessGame();
         }
         else{
@@ -91,10 +99,5 @@ function reset(){
     });
 }
 
-function generateWord(){
-    randomNum = Math.floor(Math.random() * randomSelect.length);
-    randomWord = new Word(randomSelect[randomNum]);
-    wordChoosen = true;
-}
 
 guessGame();

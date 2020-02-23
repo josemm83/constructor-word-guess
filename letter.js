@@ -1,10 +1,7 @@
-// var inquirer = require("inquirer");
-// var sample = "p";
-
 function Letter (input){
     this.letter = input;
     this.guess = false;
-    this.output = function(){
+    this.toString = function(){
         if(this.letter === " "){
             this.guess = true;
             return " ";
@@ -19,7 +16,7 @@ function Letter (input){
         }
     }
     this.character = function(char){
-        if(this.letter === char){
+        if(char === this.letter){
             this.guess = true;
         }
     }
